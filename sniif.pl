@@ -18,7 +18,7 @@ my $npe = Net::Pcap::Easy->new(
         print "$xmit TCP: $ip->{src_ip}:$tcp->{src_port}"
          . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
 
-    ,
+    },
 
     icmp_callback => sub {
         my ($npe, $ether, $ip, $icmp, $header ) = @_;

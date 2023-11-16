@@ -1,0 +1,6 @@
+dev=ens3
+filter=not port 22
+packets_per_loop=10
+bytes_to_capture=1024
+promiscuous=0
+verbose=low

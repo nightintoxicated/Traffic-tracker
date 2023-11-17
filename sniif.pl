@@ -7,7 +7,7 @@ use Net::Pcap::Easy;
 
 #time to capture the settings from file
 my $config_file = 'config';
-my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose);
+my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging);
 open (my $config_fh, '<', $config_file) or die "cannot open configuration file: $config_file\n";
 
 while (<$config_fh>) {
@@ -38,9 +38,8 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $packets_per_loop = $1;
       print "packets per loop count found: $packets_per_loop\n";
-    } else {
-      print "No match found in the 'packets_per_loop' line\n";
-      }}
+    }
+      }
 
 
   #bytes_to_capture
@@ -49,9 +48,8 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $bytes_to_capture = $1;
       print "bytes to capture count found: $bytes_to_capture\n";
-    } else {
-      print "No match found in the 'bytes_to_capture' line\n";
-      }}
+    }
+      }
 
 
   #promiscuous
@@ -60,9 +58,9 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $promiscuous = $1;
       print "promiscuous mode found: $promiscuous\n";
-    } else {
-      print "No match found in the 'promiscuous mode' line\n";
-      }}
+    }
+      }
+
 
   #verbose
   if ($_ =~ m/^verbose/) {
@@ -70,13 +68,28 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $verbose = $1;
       print "verbosity found: $verbose\n";
-    } else {
-      print "No match found in the 'verbose' line\n";
-      }}
+    }
+      }
+
+  #logging
+  if ($_ =~ m/^logging/) {
+    #capture stuff after "="
+    if (/=(\S+)/) {
+      $logging = $1;
+      print "logging found: $logging\n";
+    }
+      }
+
+
 }
 close($config_fh);
-exit 0;
+#exit 0;
 
+    if ($verbose eq "low" || $verbose eq "LOW") {
+            if ($logging eq "yes" || $logging eq "YES") {
+                print "\n\nwarning: low verbosity does not log much details\n";
+                sleep 3;
+        }}
 
 
 
@@ -88,13 +101,10 @@ my $npe = Net::Pcap::Easy->new(
         #todo, read ens3 from a config file
   dev              => $dev,
 #todo, read filter from a config file, else dont cap port 22
-  filter           => "not port 22",
-  packets_per_loop => 10,
-  bytes_to_capture => 1024,
-#todo, read this from a config file
-  promiscuous      => 0, # true or false
-
-  #todo, expand print to filehandle so it can unclude the scalars, i.e verbosity levels (set from config file)
+  filter           => $filter,
+  packets_per_loop => $packets_per_loop,
+  bytes_to_capture => $bytes_to_capture,
+  promiscuous      => $promiscuous, # true or false
 
 
 tcp_callback => sub {
@@ -104,10 +114,17 @@ tcp_callback => sub {
   print "$xmit TCP: $ip->{src_ip}:$tcp->{src_port}"
   . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
 
+  if ($logging eq "yes" || $logging eq "YES") {
   open(my $FH, '>>', "capture") or die $!;
   print $FH "$xmit TCP: $ip->{src_ip}:$tcp->{src_port}"
   . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
-  close($FH);
+  if ($verbose eq "high" || $verbose eq "HIGH") {
+  open(my $FHHIGH, '>>', "capture.high") or die $!;
+          print $FHHIGH Dumper($npe, $ether, $ip, $tcp, $header);
+          print $FHHIGH "------------------------------\n";
+  }
+  #close($FH);
+}
 },
 
 
@@ -119,11 +136,19 @@ udp_callback => sub {
   . " -> $ip->{dest_ip}:$udp->{dest_port}\n";
 
 
+  if ($logging eq "yes" || $logging eq "YES") {
   open(my $FH, '>>', "capture") or die $!;
   print $FH "$xmit UDP: $ip->{src_ip}:$udp->{src_port}"
   . " -> $ip->{dest_ip}:$udp->{dest_port}\n";
-  close($FH);
+  if ($verbose eq "high" || $verbose eq "HIGH") {
+  open(my $FHHIGH, '>>', "capture.high") or die $!;
+          print $FHHIGH Dumper($npe, $ether, $ip, $udp, $header);
+          print $FHHIGH "------------------------------\n";
+  }
+  #close($FH);
+  }
 },
+
 icmp_callback => sub {
   my ($npe, $ether, $ip, $icmp, $header ) = @_;
   my $xmit = localtime( $header->{tv_sec} );
@@ -131,12 +156,18 @@ icmp_callback => sub {
   print "$xmit ICMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
 
+  if ($logging eq "yes" || $logging eq "YES") {
   open(my $FH, '>>', "capture") or die $!;
   print "$xmit ICMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
-  close($FH);
+  if ($verbose eq "high" || $verbose eq "HIGH") {
+  open(my $FHHIGH, '>>', "capture.high") or die $!;
+          print $FHHIGH Dumper($npe, $ether, $ip, $icmp, $header);
+          print $FHHIGH "------------------------------\n";
+  }
+  #close($FH);
+  }
 },
-
 
 igmp_callback => sub {
   my ($npe, $ether, $ip, $igmp, $header ) = @_;
@@ -145,10 +176,17 @@ igmp_callback => sub {
   print "$xmit IGMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
 
+  if ($logging eq "yes" || $logging eq "YES") {
   open(my $FH, '>>', "capture") or die $!;
   print "$xmit IGMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
-  close($FH);
+  if ($verbose eq "high" || $verbose eq "HIGH") {
+  open(my $FHHIGH, '>>', "capture.high") or die $!;
+          print $FHHIGH Dumper($npe, $ether, $ip, $igmp, $header);
+          print $FHHIGH "------------------------------\n";
+  }
+  #close($FH);
+  }
 },
 
 

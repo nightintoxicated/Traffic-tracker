@@ -19,6 +19,7 @@ bytes_to_capture=1024
 promiscuous=0
 
 verbose=high
+
 logging=yes
 
 

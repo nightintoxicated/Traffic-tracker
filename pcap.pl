@@ -7,9 +7,6 @@ use Net::Pcap::Easy;
 
 #npe = net packet easy object
 #ether = ethernet object
-#ip = ip object
-#tcp = tcp object
-#header = header object
 
 #---------------
 #capture settings from file
@@ -25,67 +22,51 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $dev = $1;
       print "Device found: $dev\n";
-    } else {
-      print "No match found in the 'dev' line\n";
-      }}
+    }}
 
   #filter
   if ($_ =~ m/^filter/) {
-    #capture stuff after "="
     if (/=(.+)/) {
       $filter = $1;
       print "filter found: $filter\n";
-    } else {
-      print "No match found in the 'filter' line\n";
-      }}
+    }}
 
   #packets_per_loop
   if ($_ =~ m/^packets_per_loop/) {
-    #capture stuff after "="
     if (/=(\S+)/) {
       $packets_per_loop = $1;
       print "packets per loop count found: $packets_per_loop\n";
-    } 
-      }
+    }}
 
   #bytes_to_capture
   if ($_ =~ m/^bytes_to_capture/) {
-    #capture stuff after "="
     if (/=(\S+)/) {
       $bytes_to_capture = $1;
       print "bytes to capture count found: $bytes_to_capture\n";
-    } 
-      }
+    }}
 
   #promiscuous
   if ($_ =~ m/^promiscuous/) {
-    #capture stuff after "="
     if (/=(\S+)/) {
       $promiscuous = $1;
       print "promiscuous mode found: $promiscuous\n";
-    } 
-      }
+    }}
 
   #verbose
   if ($_ =~ m/^verbose/) {
-    #capture stuff after "="
     if (/=(\S+)/) {
       $verbose = $1;
       print "verbosity found: $verbose\n";
-    } 
-      }
+    }}
 
   #logging
   if ($_ =~ m/^logging/) {
-    #capture stuff after "="
     if (/=(\S+)/) {
       $logging = $1;
       print "logging found: $logging\n";
-    }
-      }
+    }}
 }
 close($config_fh);
-#exit 0;
 #---------------
   if ($verbose eq "low" || $verbose eq "LOW") {
     if ($logging eq "yes" || $logging eq "YES") {
@@ -195,3 +176,5 @@ Device: $npe->{dev}\n";
 while (1) {
 	$npe->loop;
  }
+
+##EOF

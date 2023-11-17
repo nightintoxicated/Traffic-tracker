@@ -1,4 +1,5 @@
 cd /usr/local/src/
+dnf install -y perl
 dnf install -y perl-Net-Pcap
 dnf install -y wget
 wget https://cpan.metacpan.org/authors/id/J/JE/JETTERO/Net-Pcap-Easy-1.4210.tar.gz

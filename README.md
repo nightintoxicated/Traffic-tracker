@@ -30,3 +30,7 @@ bytes_to_capture=x
 promiscuous=self explain
 verbose=high (or low)
 logging=yes (or no)
+
+
+print unique events
+sed 's/[A-Z].*2023 //g' capture | sort | uniq

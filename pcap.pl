@@ -96,8 +96,18 @@ tcp_callback => sub {
     . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
     if ($verbose eq "high" || $verbose eq "HIGH") {
       open(my $FHHIGH, '>>', "capture.high") or die $!;
-         print $FHHIGH Dumper($npe, $ether, $ip, $tcp, $header);
-         print $FHHIGH "------------------------------\n";
+      print $FHHIGH "TCP Packet\n";
+      
+      print $FHHIGH "Source: ", $ip->{src_ip}, ":";
+      print $FHHIGH $tcp->{src_port}, "\n";
+
+      print $FHHIGH "Destination ", $ip->{dest_ip}, ":";
+      print $FHHIGH $tcp->{dest_port}, "\n";
+
+      print $FHHIGH "Data: ", $tcp->{data}, "\n";
+      print $FHHIGH "Sequence: " . $tcp->{seqnum}, "\n";
+      #print $FHHIGH Dumper($npe, $ether, $ip, $tcp, $header);
+      print $FHHIGH "----------------------------\n";
     }
   #close($FH);
   }
@@ -117,8 +127,17 @@ udp_callback => sub {
     . " -> $ip->{dest_ip}:$udp->{dest_port}\n";
     if ($verbose eq "high" || $verbose eq "HIGH") {
       open(my $FHHIGH, '>>', "capture.high") or die $!;
-        print $FHHIGH Dumper($npe, $ether, $ip, $udp, $header);
-        print $FHHIGH "------------------------------\n";
+      print $FHHIGH "UDP Packet\n";
+      
+      print $FHHIGH "Source: ", $ip->{src_ip}, ":";
+      print $FHHIGH $udp->{src_port}, "\n";
+
+      print $FHHIGH "Destination ", $ip->{dest_ip}, ":";
+      print $FHHIGH $udp->{dest_port}, "\n";
+
+      print $FHHIGH "Data: ", $udp->{data}, "\n";
+      #print $FHHIGH Dumper($npe, $ether, $ip, $udp, $header);
+      print $FHHIGH "UDP ------------------------------\n";
     }
   #close($FH);
   }
@@ -138,8 +157,14 @@ icmp_callback => sub {
     . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
     if ($verbose eq "high" || $verbose eq "HIGH") {
       open(my $FHHIGH, '>>', "capture.high") or die $!;
-        print $FHHIGH Dumper($npe, $ether, $ip, $icmp, $header);
-        print $FHHIGH "------------------------------\n";
+      print $FHHIGH "ICMP Packet\n";
+      
+      print $FHHIGH "Source: ", $ip->{src_ip}, "\n";
+      print $FHHIGH "Destination ", $ip->{dest_ip}, "\n";
+      print $FHHIGH "Data: ", $ip->{data}, "\n";
+
+      #print $FHHIGH Dumper($npe, $ether, $ip, $udp, $header);
+      print $FHHIGH "ICMP ------------------------------\n";
     }
   #close($FH);
   }
@@ -159,8 +184,14 @@ igmp_callback => sub {
     . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
     if ($verbose eq "high" || $verbose eq "HIGH") {
       open(my $FHHIGH, '>>', "capture.high") or die $!;
-        print $FHHIGH Dumper($npe, $ether, $ip, $igmp, $header);
-        print $FHHIGH "------------------------------\n";
+      print $FHHIGH "IGMP Packet\n";
+      
+      print $FHHIGH "Source: ", $ip->{src_ip}, "\n";
+      print $FHHIGH "Destination ", $ip->{dest_ip}, "\n";
+      print $FHHIGH "Data: ", $ip->{data}, "\n";
+
+      #print $FHHIGH Dumper($npe, $ether, $ip, $igmp, $header);
+      print $FHHIGH "IGMP ------------------------------\n";
     }
   #close($FH);
   }

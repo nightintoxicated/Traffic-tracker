@@ -1,5 +1,6 @@
 # whos_speaking
 
+
 monitor outgoing traffic
 
 would be good to have something that does reverse lookups of the ip and a geo location also
@@ -10,17 +11,17 @@ default:
 
 dev=ens3
 
-filter=not port 22
+filter=not port 22 | https://www.tcpdump.org/manpages/pcap-filter.7.html
 
-packets_per_loop=10
+packets_per_loop=10 | x
 
-bytes_to_capture=1024
+bytes_to_capture=1024 | 65535
 
-promiscuous=0
+promiscuous=0 | 1
 
-verbose=high
+verbose=high | how
 
-logging=yes
+logging=yes | no
 
 
 dev=device to monitor

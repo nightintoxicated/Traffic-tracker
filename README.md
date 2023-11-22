@@ -1,15 +1,11 @@
-# whos_speaking
-https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png
-![alt text](https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png?raw=true)
-
-
-
+# Traffic-tracker
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>
 
-monitor outgoing traffic
+Monitor outgoing traffic easily, log what you want and find unique hits.
 
 would be good to have something that does reverse lookups of the ip and a geo location also
 
+Traffic tracker is a program sitting ontop of libpcap to see the flow of traffic through your system.
 
 config options
 default:

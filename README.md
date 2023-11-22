@@ -1,11 +1,22 @@
 # Traffic-tracker
+would be good to have something that does reverse lookups of the ip and a geo location also
+
+
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>  
 Traffic tracker is a program sitting ontop of libpcap and net::pcap::easy to see the flow of traffic through your system.  
 You can easily monitor outgoing traffic, log what you want and find unique hits.  
 
 Perhaps Run it on idle and see if your computer is making any outbound connections somewhere unwanted.  
 
-# Config File  
+
+<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing"/>  
+
+
+# Setup: setup.sh  
+install the dependencies you need
+
+
+# Setup: Config File  
 The config file contains a number of lines you can edit to change the behaviour of the program.  
   
 dev: The base device to monitor traffic from  
@@ -29,13 +40,14 @@ verbose=high | low
 logging=yes | no  
 intrudermode=yes | no  
 
-<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing"/>  
+# Running the program  
+pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "perl pcap.pl" to start the program)  
+
   
 # Other Files  
-setup.sh (install required dependencies)  
 unique.sh (show unique addresses from the log file if you captured with intruder mode off)  
-pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "perl pcap.pl" to start the program)  
-  
-would be good to have something that does reverse lookups of the ip and a geo location also
+
+
 
 # no warranty, or whatever
+

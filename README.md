@@ -28,6 +28,8 @@ promiscuous=0 | 1
 verbose=high | low  
 logging=yes | no  
 intrudermode=yes | no  
+
+<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing" width="200"/>  
   
 # Other Files  
 setup.sh (install required dependencies)  

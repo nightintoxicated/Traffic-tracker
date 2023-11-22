@@ -4,7 +4,8 @@ https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png
 
 
 
-<img src="[drawing.jpg](https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png)" alt="drawing" width="200"/>
+<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>
+
 monitor outgoing traffic
 
 would be good to have something that does reverse lookups of the ip and a geo location also

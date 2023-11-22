@@ -1,6 +1,6 @@
 # whos_speaking
-
-
+https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png
+![alt text](https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png?raw=true)
 monitor outgoing traffic
 
 would be good to have something that does reverse lookups of the ip and a geo location also

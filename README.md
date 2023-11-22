@@ -35,9 +35,4 @@ pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "p
   
 would be good to have something that does reverse lookups of the ip and a geo location also
 
-# no warrenty, or whatever
-
-
-
-print unique events
-sed 's/[A-Z].*2023 //g' capture | sort | uniq
+# no warranty, or whatever

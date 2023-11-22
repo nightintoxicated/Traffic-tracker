@@ -33,7 +33,10 @@ logging=yes | no
 
 intrudermode=yes | no
 
-
+# Other Files
+setup.sh (install required dependencies)
+unique.sh (show unique addresses from the log file if you captured with intruder mode off)
+pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "perl pcap.pl" to start the program)
 
 would be good to have something that does reverse lookups of the ip and a geo location also
 

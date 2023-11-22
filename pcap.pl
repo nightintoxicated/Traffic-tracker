@@ -1,6 +1,9 @@
+
+
 #!/usr/bin/perl
 $|=1;
 use strict;
+use Socket;
 use warnings;
 use Data::Dumper;
 use Net::Pcap::Easy;
@@ -11,7 +14,7 @@ use Net::Pcap::Easy;
 #---------------
 #capture settings from file
 my $config_file = 'config';
-my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging, $intruder);
+my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging, $intruder, $reverselookup);
 my (@tcp_array, @udp_array, @icmp_array, @igmp_array);
 open (my $config_fh, '<', $config_file) or die "cannot open configuration file: $config_file\n";
 
@@ -73,8 +76,14 @@ while (<$config_fh>) {
     if (/=(\S+)/) {
       $intruder = $1;
       print "intruder mode found: $intruder\n";
-      #TODO, intruder mode where only 1 occurance is printed, for each ip
-      #to be ran passively 
+    }}
+
+
+  #reverse lookup
+  if ($_ =~ m/^reverselookup/) {
+    if (/=(\S+)/) {
+      $reverselookup = $1;
+      print "reverselookup found: $reverselookup\n";
     }}
 
 
@@ -116,12 +125,16 @@ tcp_callback => sub {
       }}
 
       if ($found_duplicate == 0 ) {
-        print "====TCP unique entry==== $entry\n";
+        print "====TCP unique entry==== $entry";
+        if ($reverselookup eq "yes") {
+	lookup($ip->{src_ip});
+}
 	 push(@tcp_array, $entry);
       }}
 
 ## intruder mode end
- 
+
+
  if ($intruder ne "yes" && $intruder ne "YES") {
   print "$datetime TCP: $ip->{src_ip}:$tcp->{src_port}" 
   . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
@@ -172,6 +185,10 @@ udp_callback => sub {
 
       if ($found_duplicate == 0 ) {
         print "====UDP unique entry==== $entry\n";
+	#TODO, udp causes a loop with reverse lookup
+	#if ($reverselookup eq "yes") {
+	#lookup($ip->{src_ip});
+	#}
 	 push(@udp_array, $entry);
       }}
 
@@ -227,6 +244,10 @@ icmp_callback => sub {
 
       if ($found_duplicate == 0 ) {
         print "====ICMP unique entry==== $entry\n";
+        if ($reverselookup eq "yes") {
+	lookup($ip->{src_ip});
+}
+
 	 push(@icmp_array, $entry);
       }}
 
@@ -277,6 +298,9 @@ igmp_callback => sub {
 
       if ($found_duplicate == 0 ) {
         print "====IGMP unique entry==== $entry\n";
+        if ($reverselookup eq "yes") {
+	lookup($ip->{src_ip});
+}
 	 push(@igmp_array, $entry);
       }}
 
@@ -309,6 +333,16 @@ igmp_callback => sub {
 
 );
 #---------------
+
+sub lookup {
+	#reverse lookup
+my $ip = shift;
+if ($ip ne "0.0.0.0") {
+my $iaddr = inet_aton("$ip"); # or whatever address
+my $name = gethostbyaddr($iaddr, AF_INET);
+print "$ip is $name \n\n";
+}
+}
 
 #main() is here
 print "beginning packet capture

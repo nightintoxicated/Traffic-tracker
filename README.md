@@ -5,6 +5,7 @@ You can easily monitor outgoing traffic, log what you want and find unique hits.
 
 # Config File  
 The config file contains a number of lines you can edit to change the behaviour of the program.  
+  
 dev: The base device to monitor traffic from  
 filter: same syntax as youd expect from tcpdump et al: https://www.tcpdump.org/manpages/pcap-filter.7.html  
 packets_per_loop: how many packets do you want to capture for each loop cycle.  

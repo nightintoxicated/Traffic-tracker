@@ -1,37 +1,43 @@
 # Traffic-tracker
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>
+Traffic tracker is a program sitting ontop of libpcap / netpcap and net pcap easy to see the flow of traffic through your system.
+You can easily monitor outgoing traffic, log what you want and find unique hits.
 
-Monitor outgoing traffic easily, log what you want and find unique hits.
+# Config File
+The config file contains a number of lines you can edit to change the behaviour of the program.
+dev: The base device to monitor traffic from
+filter: same syntax as youd expect from tcpdump et al: https://www.tcpdump.org/manpages/pcap-filter.7.html
+packets_per_loop: how many packets do you want to capture for each loop cycle.
+bytes_to_capture: 256 to 65535 (maximum value of an unsigned 16-bit integer)
+promiscuous: want to capture traffic for other devices?
+verbose: high verbosity will spit out LOTS more details in the capture.high log file.
+logging: self explanatory
+intrudermode: This is a mode that only prints unique connections, you can run it while your computer is idle to see if traffic of your filter is going.
 
-would be good to have something that does reverse lookups of the ip and a geo location also
 
-Traffic tracker is a program sitting ontop of libpcap to see the flow of traffic through your system.
-
-config options
-default:
+config options example, where | seperates options to choose, select only one, e.g. intrudermode=yes
 
 dev=ens3
 
-filter=not port 22 | https://www.tcpdump.org/manpages/pcap-filter.7.html
+filter=not port 22
 
-packets_per_loop=10 | x
+packets_per_loop=10
 
-bytes_to_capture=1024 | 65535
+bytes_to_capture=65535 
 
 promiscuous=0 | 1
 
-verbose=high | how
+verbose=high | low
 
 logging=yes | no
 
+intrudermode=yes | no
 
-dev=device to monitor
-filter=same syntax style as tcpdump
-packets_per_loop=x
-bytes_to_capture=x
-promiscuous=self explain
-verbose=high (or low)
-logging=yes (or no)
+
+
+would be good to have something that does reverse lookups of the ip and a geo location also
+
+
 
 
 print unique events

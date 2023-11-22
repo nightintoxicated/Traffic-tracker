@@ -1,7 +1,8 @@
 # Traffic-tracker
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>
-Traffic tracker is a program sitting ontop of libpcap / netpcap and net pcap easy to see the flow of traffic through your system.  
+Traffic tracker is a program sitting ontop of libpcap and net::pcap::easy to see the flow of traffic through your system.  
 You can easily monitor outgoing traffic, log what you want and find unique hits.  
+Run it on idle and see if your computer is making any outbound connections somewhere unwanted.   
 
 # Config File  
 The config file contains a number of lines you can edit to change the behaviour of the program.  
@@ -34,6 +35,7 @@ pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "p
   
 would be good to have something that does reverse lookups of the ip and a geo location also
 
+# no warrenty, or whatever
 
 
 

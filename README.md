@@ -29,7 +29,7 @@ verbose=high | low
 logging=yes | no  
 intrudermode=yes | no  
 
-<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing" width="200"/>  
+<img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing"/>  
   
 # Other Files  
 setup.sh (install required dependencies)  

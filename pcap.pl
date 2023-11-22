@@ -6,12 +6,13 @@ use Data::Dumper;
 use Net::Pcap::Easy;
 
 #npe = net packet easy object
-#ether = ethernet object
+#ether = ethernet object, etc
 
 #---------------
 #capture settings from file
 my $config_file = 'config';
-my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging);
+my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging, $intruder);
+my (@tcp_array, @udp_array, @icmp_array, @igmp_array);
 open (my $config_fh, '<', $config_file) or die "cannot open configuration file: $config_file\n";
 
 while (<$config_fh>) {
@@ -65,6 +66,18 @@ while (<$config_fh>) {
       $logging = $1;
       print "logging found: $logging\n";
     }}
+
+
+  #intruder mode
+  if ($_ =~ m/^intruder/) {
+    if (/=(\S+)/) {
+      $intruder = $1;
+      print "intruder mode found: $intruder\n";
+      #TODO, intruder mode where only 1 occurance is printed, for each ip
+      #to be ran passively 
+    }}
+
+
 }
 close($config_fh);
 #---------------
@@ -75,6 +88,7 @@ close($config_fh);
   }}
 #---------------
 #setup and subroutines
+
 my $npe = Net::Pcap::Easy->new(
   dev              => $dev,
   filter           => $filter,
@@ -83,12 +97,36 @@ my $npe = Net::Pcap::Easy->new(
   promiscuous      => $promiscuous,
 
 
+
 tcp_callback => sub {
   my ($npe, $ether, $ip, $tcp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
+
+
+## intruder mode start
+ if ($intruder eq "yes" || $intruder eq "YES") {
+   my $entry = "$ip->{src_ip}:$tcp->{src_port}" 
+  . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
+
+  my $found_duplicate = 0;
+    foreach my $item (@tcp_array) {
+      if ($item eq $entry) {
+        $found_duplicate = 1;
+	last;
+      }}
+
+      if ($found_duplicate == 0 ) {
+        print "====TCP unique entry==== $entry\n";
+	 push(@tcp_array, $entry);
+      }}
+
+## intruder mode end
+ 
+ if ($intruder ne "yes" && $intruder ne "YES") {
   print "$datetime TCP: $ip->{src_ip}:$tcp->{src_port}" 
   . " -> $ip->{dest_ip}:$tcp->{dest_port}\n";
-  
+ }
+
 
   if ($logging eq "yes" || $logging eq "YES") {
     open(my $FH, '>>', "capture") or die $!;
@@ -117,8 +155,33 @@ tcp_callback => sub {
 udp_callback => sub {
   my ($npe, $ether, $ip, $udp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
+  
+  
+  
+## intruder mode start
+ if ($intruder eq "yes" || $intruder eq "YES") {
+   my $entry = "$ip->{src_ip}:$udp->{src_port}" 
+  . " -> $ip->{dest_ip}:$udp->{dest_port}\n";
+
+  my $found_duplicate = 0;
+    foreach my $item (@udp_array) {
+      if ($item eq $entry) {
+        $found_duplicate = 1;
+	last;
+      }}
+
+      if ($found_duplicate == 0 ) {
+        print "====UDP unique entry==== $entry\n";
+	 push(@udp_array, $entry);
+      }}
+
+## intruder mode end
+  
+  
+ if ($intruder ne "yes" && $intruder ne "YES") {
   print "$datetime UDP: $ip->{src_ip}:$udp->{src_port}"
   . " -> $ip->{dest_ip}:$udp->{dest_port}\n";
+  }
 
 
   if ($logging eq "yes" || $logging eq "YES") {
@@ -147,9 +210,33 @@ udp_callback => sub {
 icmp_callback => sub {
   my ($npe, $ether, $ip, $icmp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
+
+
+
+## intruder mode start
+ if ($intruder eq "yes" || $intruder eq "YES") {
+   my $entry = "$ip->{src_ip}:" 
+  . " -> $ip->{dest_ip}:$ip->{data}\n";
+
+  my $found_duplicate = 0;
+    foreach my $item (@icmp_array) {
+      if ($item eq $entry) {
+        $found_duplicate = 1;
+	last;
+      }}
+
+      if ($found_duplicate == 0 ) {
+        print "====ICMP unique entry==== $entry\n";
+	 push(@icmp_array, $entry);
+      }}
+
+## intruder mode end
+  
+  
+  if ($intruder ne "yes" && $intruder ne "YES") {
   print "$datetime ICMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
-  
+}
 
   if ($logging eq "yes" || $logging eq "YES") {
     open(my $FH, '>>', "capture") or die $!;
@@ -174,9 +261,32 @@ icmp_callback => sub {
 igmp_callback => sub {
   my ($npe, $ether, $ip, $igmp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
+
+
+## intruder mode start
+ if ($intruder eq "yes" || $intruder eq "YES") {
+   my $entry = "$ip->{src_ip}:" 
+  . " -> $ip->{dest_ip}:$ip->{data}\n";
+
+  my $found_duplicate = 0;
+    foreach my $item (@igmp_array) {
+      if ($item eq $entry) {
+        $found_duplicate = 1;
+	last;
+      }}
+
+      if ($found_duplicate == 0 ) {
+        print "====IGMP unique entry==== $entry\n";
+	 push(@igmp_array, $entry);
+      }}
+
+## intruder mode end
+  
+  
+  if ($intruder ne "yes" && $intruder ne "YES") {
   print "$datetime IGMP: $ether->{src_mac}:$ip->{src_ip}"
   . " -> $ether->{dest_mac}:$ip->{dest_ip}\n";
-  
+ } 
 
   if ($logging eq "yes" || $logging eq "YES") {
     open(my $FH, '>>', "capture") or die $!;

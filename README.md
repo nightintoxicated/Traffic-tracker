@@ -1,12 +1,11 @@
 # Traffic-tracker
-would be good to have something that does reverse lookups of the ip and a geo location also
 
 
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/logo.png" alt="drawing" width="200"/>  
 Traffic tracker is a program sitting ontop of libpcap and net::pcap::easy to see the flow of traffic through your system.  
 You can easily monitor outgoing traffic, log what you want and find unique hits.  
 
-Perhaps Run it on idle and see if your computer is making any outbound connections somewhere unwanted.  
+Run it on idle and see if your computer is making any unwanted outbound connections then block them with a firewall, or investigate.  
 
 
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing"/>  
@@ -41,11 +40,13 @@ logging=yes | no
 intrudermode=yes | no  
 
 # Running the program  
-pcap.pl (the main program, make it executable with chmod +x pcap.pl, then run "perl pcap.pl" to start the program)  
+if you ran the setup script and you have usr/local/sbin in your path, you can type monitor and the program will start running, otherwise, the executable is in /etc/traffictracker.
+the logging also logs to /etc/traffictracker. 
 
   
 # Other Files  
 unique.sh (show unique addresses from the log file if you captured with intruder mode off)  
+hostnamelookup.sh (does a reverse lookup of the unique ip's captured from the capture file if logging is on)
 
 
 

@@ -11,7 +11,7 @@ use Net::Pcap::Easy;
 
 #---------------
 #BEGIN capture settings from file
-my $config_file = 'config';
+my $config_file = '/etc/traffictracker/config';
 my ($dev, $filter, $packets_per_loop, $bytes_to_capture, $promiscuous, $verbose, $logging, $intruder);
 my (@tcp_array, @udp_array, @icmp_array, @igmp_array);
 open (my $config_fh, '<', $config_file) or die "cannot open configuration file: $config_file\n";

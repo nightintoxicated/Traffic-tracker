@@ -7,7 +7,7 @@ use Data::Dumper;
 use Net::Pcap::Easy;
 
 #npe = net packet easy object
-#ether = ethernet object, etc
+#ether = ethernet object, the ip = ip object, etc
 
 #---------------
 #BEGIN capture settings from file
@@ -98,7 +98,7 @@ my $npe = Net::Pcap::Easy->new(
   promiscuous      => $promiscuous,
 
 
-
+#tcp packets
 tcp_callback => sub {
   my ($npe, $ether, $ip, $tcp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
@@ -153,7 +153,7 @@ tcp_callback => sub {
   }
 },
 
-
+#udp packets
 udp_callback => sub {
   my ($npe, $ether, $ip, $udp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
@@ -208,7 +208,7 @@ udp_callback => sub {
   }
 },
 
-
+#icmp packets
 icmp_callback => sub {
   my ($npe, $ether, $ip, $icmp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );
@@ -260,7 +260,7 @@ icmp_callback => sub {
   }
 },
 
-
+#igmp packets
 igmp_callback => sub {
   my ($npe, $ether, $ip, $igmp, $header ) = @_;
   my $datetime = localtime( $header->{tv_sec} );

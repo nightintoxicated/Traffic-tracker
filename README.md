@@ -5,7 +5,7 @@
 Traffic tracker is a program sitting ontop of libpcap and net::pcap::easy to see the flow of traffic through your system.  
 You can easily monitor outgoing traffic, log what you want and find unique hits.  
 
-Run it on idle and see if your computer is making any unwanted outbound connections then block them with a firewall, or investigate.  
+With intruder mode, run traffic tracker on idle and see if your computer is making any unwanted outbound connections then block them with a firewall, or investigate.  
 
 
 <img src="https://github.com/nightintoxicated/Traffic-tracker/blob/main/edit.jpg" alt="drawing"/>  

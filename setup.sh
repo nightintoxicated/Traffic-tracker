@@ -29,6 +29,7 @@ make install
 mkdir -p /etc/traffictracker/
 cp $CWD/* /etc/traffictracker/
 
-ln -s /usr/local/sbin/monitor /etc/traffictracker/monitor.pm
+ln -s /etc/traffictracker/monitor.pm /usr/local/sbin/monitor
+chmod +x /usr/local/sbin/monitor
 
 echo "finished, use monitor to start the program, files are under /etc/traffictracker"

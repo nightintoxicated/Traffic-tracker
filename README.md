@@ -46,6 +46,7 @@ the logging also logs to /etc/traffictracker.
   
 # Other Files  
 unique.sh (show unique addresses from the log file if you captured with intruder mode off)  
+unique.sh can take an argument as an ip address, this pulls out only logs relevant to that ip, otherwise without an argument it shows everything.
 hostnamelookup.sh (does a reverse lookup of the unique ip's captured from the capture file if logging is on)
 
 
